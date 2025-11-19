@@ -253,7 +253,11 @@ initializeDb().then(() => {
           {
             key: '_created_via_system',
             value: 'Sistema de Pedidos Embraflex'
-          }
+          },
+          ...(billing?.cpfCnpj ? [{
+            key: '_billing_cpf_cnpj',
+            value: billing.cpfCnpj
+          }] : [])
         ]
       };
 
