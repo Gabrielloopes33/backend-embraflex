@@ -101,10 +101,10 @@ initializeDb().then(() => {
       let result;
       if (user?.role === 'admin') {
         // Admin vê todas as ordens
-        result = await pool.query('SELECT * FROM orders ORDER BY createdAt DESC');
+        result = await pool.query('SELECT * FROM orders ORDER BY "createdAt" DESC');
       } else {
         // Vendedor vê apenas as suas ordens
-        result = await pool.query('SELECT * FROM orders WHERE userId = $1 ORDER BY createdAt DESC', [user?.id]);
+        result = await pool.query('SELECT * FROM orders WHERE "userId" = $1 ORDER BY "createdAt" DESC', [user?.id]);
       }
       const orders = result.rows.map(parseOrder);
       res.json(orders);
