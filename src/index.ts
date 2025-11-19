@@ -214,6 +214,8 @@ initializeDb().then(() => {
   app.post('/api/orders/woocommerce', authenticateToken, async (req: AuthenticatedRequest, res) => {
     const { customerName, customerEmail, products, billing } = req.body;
 
+    console.log('📦 Dados recebidos para WooCommerce:', JSON.stringify(req.body, null, 2));
+
     if (!customerName || !products || !Array.isArray(products) || products.length === 0) {
       return res.status(400).json({ message: 'Cliente e produtos são obrigatórios.' });
     }
@@ -223,9 +225,11 @@ initializeDb().then(() => {
       const lineItems = products.map((product: any) => ({
         product_id: product.productId,
         quantity: product.quantity || 1,
-        name: product.productName,
+        name: product.productName || 'Produto sem nome',
         price: product.unitPrice?.toString() || '0'
       }));
+
+      console.log('🛒 Line items preparados:', JSON.stringify(lineItems, null, 2));
 
       // Criar pedido no WooCommerce
       const wooOrder = {
@@ -266,10 +270,16 @@ initializeDb().then(() => {
       });
 
     } catch (error: any) {
-      console.error('Erro ao criar pedido no WooCommerce:', error.response?.data || error.message);
+      console.error('❌ Erro ao criar pedido no WooCommerce:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        stack: error.stack
+      });
       res.status(500).json({
         message: 'Erro ao criar pedido no WooCommerce.',
-        error: error.response?.data?.message || error.message
+        error: error.response?.data || error.message,
+        details: error.response?.data
       });
     }
   });
