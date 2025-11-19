@@ -16,7 +16,17 @@ const port = process.env.PORT || 3001;
 
 const JWT_SECRET = process.env.JWT_SECRET || 'seu_segredo_super_secreto';
 
-app.use(cors());
+// Configuração do CORS para permitir o frontend
+app.use(cors({
+  origin: [
+    'https://extraordinary-shortbread-ca83bc.netlify.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Estendendo a interface Request do Express para incluir o usuário
