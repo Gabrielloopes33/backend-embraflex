@@ -20,6 +20,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'seu_segredo_super_secreto';
 const corsOptions = {
   origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
     const allowedOrigins = [
+      'https://embraflex1.netlify.app',
       'https://darling-dolphin-a2e151.netlify.app',
       'https://extraordinary-shortbread-ca83bc.netlify.app',
       'http://localhost:5173',
@@ -622,26 +623,53 @@ initializeDb().then(() => {
   app.get('/api/wc/customers', authenticateToken, async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
+      console.log(`🔍 Buscando clientes - Usuário: ${user?.username} (${user?.role})`);
+      
       const { data } = await wooCommerceApi.get('customers', {
         ...req.query,
         per_page: 100 // Aumentar limite para garantir que pegamos todos os clientes
       });
       
+      console.log(`📊 Total de clientes retornados do WooCommerce: ${data.length}`);
+      
       // Se o usuário for vendedor, filtrar apenas seus clientes
       if (user?.role === 'vendedor') {
         const vendedorName = user.username;
+        
+        // Log detalhado dos meta_data de cada cliente
+        console.log('🔎 Analisando meta_data dos clientes:');
+        data.forEach((customer: any, index: number) => {
+          const vendedorMeta = customer.meta_data?.find((meta: any) => meta.key === 'vendedor_name');
+          console.log(`  Cliente ${index + 1} (ID: ${customer.id}): ${customer.first_name} ${customer.last_name}`);
+          console.log(`    - vendedor_name: "${vendedorMeta?.value || 'NÃO DEFINIDO'}"`);
+          console.log(`    - Comparando com: "${vendedorName}"`);
+          console.log(`    - Match: ${vendedorMeta?.value === vendedorName}`);
+        });
+        
         const filteredData = data.filter((customer: any) => {
           const vendedorMeta = customer.meta_data?.find((meta: any) => meta.key === 'vendedor_name');
           return vendedorMeta?.value === vendedorName;
         });
-        console.log(`🔍 Clientes filtrados para vendedor ${vendedorName}:`, filteredData.length);
-        res.json(filteredData);
+        
+        console.log(`✅ Clientes filtrados para vendedor "${vendedorName}": ${filteredData.length} de ${data.length}`);
+        
+        // Se não houver clientes com meta_data, retornar todos (modo fallback temporário)
+        if (filteredData.length === 0 && data.length > 0) {
+          console.warn(`⚠️ ATENÇÃO: Nenhum cliente tem meta_data 'vendedor_name'. Retornando todos os clientes para debug.`);
+          console.warn(`⚠️ SOLUÇÃO: Certifique-se de que os clientes foram criados pelo sistema ou adicione manualmente o campo 'vendedor_name' nos clientes existentes.`);
+          // Comentar a linha abaixo quando quiser ativar o filtro estrito
+          res.json(data); // TEMPORÁRIO: retorna todos
+          // res.json(filteredData); // DESCOMENTAR para filtro estrito
+        } else {
+          res.json(filteredData);
+        }
       } else {
         // Admin vê todos os clientes
+        console.log(`✅ Admin vê todos os clientes: ${data.length}`);
         res.json(data);
       }
     } catch (error: any) {
-      console.error('Erro ao buscar clientes do WooCommerce:', error.response?.data);
+      console.error('❌ Erro ao buscar clientes do WooCommerce:', error.response?.data);
       res.status(500).json({ message: 'Falha ao buscar clientes do WooCommerce.' });
     }
   });
