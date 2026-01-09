@@ -256,9 +256,14 @@ initializeDb().then(() => {
       
       console.log('✅ Ordem criada com sucesso:', newOrder.id);
       res.status(201).json(newOrder);
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Erro ao criar ordem:', error);
-      res.status(500).json({ message: 'Erro interno do servidor.', error: String(error) });
+      console.error('❌ Stack:', error.stack);
+      res.status(500).json({ 
+        message: 'Erro interno do servidor.', 
+        error: error.message || String(error),
+        details: error.details || null
+      });
     }
   });
 
