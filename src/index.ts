@@ -189,8 +189,6 @@ initializeDb().then(() => {
   app.post('/api/orders', async (req: Request, res: Response) => {
     const { customerName, products, priority, notes, vendedorId, vendedorName } = req.body;
 
-    console.log('📝 Criando ordem de produção:', { customerName, productsCount: products?.length, priority });
-
     if (!customerName || !products) {
       return res.status(400).json({ message: 'Cliente e produtos são obrigatórios.' });
     }
@@ -211,37 +209,26 @@ initializeDb().then(() => {
     };
 
     try {
-      // Montar objeto apenas com campos que existem na tabela
-      const dataToInsert: any = {
-        id: newOrder.id,
-        customerName: newOrder.customerName,
-        products: JSON.stringify(newOrder.products),
-        status: newOrder.status,
-        priority: newOrder.priority,
-        createdAt: newOrder.createdAt // Obrigatório (NOT NULL)
-      };
-      
-      // Adicionar campos opcionais se existirem
-      if (newOrder.notes) dataToInsert.notes = newOrder.notes;
-      if (newOrder.history) dataToInsert.history = JSON.stringify(newOrder.history);
-      if (newOrder.comments) dataToInsert.comments = JSON.stringify(newOrder.comments);
-      if (newOrder.userId) dataToInsert.userId = newOrder.userId;
-      if (newOrder.vendedorId) dataToInsert.vendedorId = newOrder.vendedorId;
-      if (newOrder.vendedorName) dataToInsert.vendedorName = newOrder.vendedorName;
-
-      console.log('💾 Inserindo no Supabase...');
-
-      // Inserir diretamente sem .select() desnecessário
-      const { error: insertError } = await supabase
+      // Inserir diretamente no Supabase (otimizado)
+      const { error } = await supabase
         .from('orders')
-        .insert([dataToInsert]);
+        .insert([{
+          id: newOrder.id,
+          customerName: newOrder.customerName,
+          products: JSON.stringify(newOrder.products),
+          status: newOrder.status,
+          priority: newOrder.priority,
+          createdAt: newOrder.createdAt,
+          notes: newOrder.notes || null,
+          history: JSON.stringify(newOrder.history),
+          comments: JSON.stringify(newOrder.comments),
+          userId: newOrder.userId,
+          vendedorId: newOrder.vendedorId,
+          vendedorName: newOrder.vendedorName,
+        }]);
 
-      if (insertError) {
-        console.error('❌ Erro do Supabase:', insertError.message);
-        throw insertError;
-      }
+      if (error) throw error;
       
-      console.log('✅ Ordem criada com sucesso:', newOrder.id);
       res.status(201).json(newOrder);
     } catch (error: any) {
       console.error('❌ Erro ao criar ordem:', error.message);
