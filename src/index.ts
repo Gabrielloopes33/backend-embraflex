@@ -211,22 +211,25 @@ initializeDb().then(() => {
     };
 
     try {
-      const dataToInsert = {
+      // Montar objeto apenas com campos que existem na tabela
+      const dataToInsert: any = {
         id: newOrder.id,
         customerName: newOrder.customerName,
         products: JSON.stringify(newOrder.products),
         status: newOrder.status,
-        priority: newOrder.priority,
-        notes: newOrder.notes,
-        createdAt: newOrder.createdAt,
-        history: JSON.stringify(newOrder.history),
-        comments: JSON.stringify(newOrder.comments),
-        userId: newOrder.userId,
-        vendedorId: newOrder.vendedorId,
-        vendedorName: newOrder.vendedorName
+        priority: newOrder.priority
       };
+      
+      // Adicionar campos opcionais se existirem
+      if (newOrder.notes) dataToInsert.notes = newOrder.notes;
+      if (newOrder.createdAt) dataToInsert.createdAt = newOrder.createdAt;
+      if (newOrder.history) dataToInsert.history = JSON.stringify(newOrder.history);
+      if (newOrder.comments) dataToInsert.comments = JSON.stringify(newOrder.comments);
+      if (newOrder.userId) dataToInsert.userId = newOrder.userId;
+      if (newOrder.vendedorId) dataToInsert.vendedorId = newOrder.vendedorId;
+      if (newOrder.vendedorName) dataToInsert.vendedorName = newOrder.vendedorName;
 
-      console.log('💾 Inserindo no Supabase:', dataToInsert);
+      console.log('💾 Inserindo no Supabase:', JSON.stringify(dataToInsert, null, 2));
 
       // Tentar inserir com .select() para forçar retorno
       const insertResult = await supabase
