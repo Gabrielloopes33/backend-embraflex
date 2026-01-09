@@ -621,10 +621,14 @@ initializeDb().then(() => {
     }
   });
 
-  // Proxy para buscar clientes (SEM autenticação - uso interno)
+  // ========================================
+  // ROTAS WOOCOMMERCE - SEM AUTENTICAÇÃO
+  // ========================================
+  
+  // Proxy para buscar clientes (SEM autenticação - uso interno v2)
   app.get('/api/wc/customers', async (req: Request, res: Response) => {
     try {
-      console.log('🔍 Buscando todos os clientes do WooCommerce');
+      console.log('🔍 [V2-SEM-AUTH] Buscando todos os clientes do WooCommerce');
       
       const { data } = await wooCommerceApi.get('customers', {
         ...req.query,
