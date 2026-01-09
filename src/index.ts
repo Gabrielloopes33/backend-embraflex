@@ -187,7 +187,10 @@ initializeDb().then(() => {
 
   // Criar uma nova ordem
   app.post('/api/orders', async (req: Request, res: Response) => {
+    const startTime = Date.now();
     const { customerName, products, priority, notes, vendedorId, vendedorName } = req.body;
+
+    console.log(`⏱️ [${new Date().toISOString()}] Iniciando criação de pedido`);
 
     if (!customerName || !products) {
       return res.status(400).json({ message: 'Cliente e produtos são obrigatórios.' });
@@ -209,8 +212,10 @@ initializeDb().then(() => {
     };
 
     try {
-      // Inserir diretamente no Supabase (otimizado)
-      const { error } = await supabase
+      console.log('📝 Preparando inserção no Supabase...');
+      
+      // Criar timeout manual de 30s
+      const insertPromise = supabase
         .from('orders')
         .insert([{
           id: newOrder.id,
@@ -227,14 +232,25 @@ initializeDb().then(() => {
           vendedorName: newOrder.vendedorName,
         }]);
 
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout ao inserir no Supabase')), 30000)
+      );
+
+      console.log('💾 Inserindo no Supabase...');
+      const { error } = await Promise.race([insertPromise, timeoutPromise]) as any;
+
       if (error) throw error;
       
+      const elapsed = Date.now() - startTime;
+      console.log(`✅ Pedido criado com sucesso em ${elapsed}ms`);
       res.status(201).json(newOrder);
     } catch (error: any) {
-      console.error('❌ Erro ao criar ordem:', error.message);
+      const elapsed = Date.now() - startTime;
+      console.error(`❌ Erro ao criar ordem após ${elapsed}ms:`, error.message);
       res.status(500).json({ 
         message: 'Erro interno do servidor.', 
-        error: error.message || String(error)
+        error: error.message || String(error),
+        elapsed: `${elapsed}ms`
       });
     }
   });
