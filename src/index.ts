@@ -222,8 +222,8 @@ initializeDb().then(() => {
       
       // Adicionar campos opcionais se existirem
       if (newOrder.notes) dataToInsert.notes = newOrder.notes;
-      // NÃO inserir createdAt - deixar o banco usar o default created_at (timestamp)
-      // if (newOrder.createdAt) dataToInsert.createdAt = newOrder.createdAt;
+      // Inserir createdAt (text) para atender constraint NOT NULL
+      dataToInsert.createdAt = newOrder.createdAt;
       if (newOrder.history) dataToInsert.history = JSON.stringify(newOrder.history);
       if (newOrder.comments) dataToInsert.comments = JSON.stringify(newOrder.comments);
       if (newOrder.userId) dataToInsert.userId = newOrder.userId;
