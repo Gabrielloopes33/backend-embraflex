@@ -217,56 +217,37 @@ initializeDb().then(() => {
         customerName: newOrder.customerName,
         products: JSON.stringify(newOrder.products),
         status: newOrder.status,
-        priority: newOrder.priority
+        priority: newOrder.priority,
+        createdAt: newOrder.createdAt // Obrigatório (NOT NULL)
       };
       
       // Adicionar campos opcionais se existirem
       if (newOrder.notes) dataToInsert.notes = newOrder.notes;
-      // Inserir createdAt (text) para atender constraint NOT NULL
-      dataToInsert.createdAt = newOrder.createdAt;
       if (newOrder.history) dataToInsert.history = JSON.stringify(newOrder.history);
       if (newOrder.comments) dataToInsert.comments = JSON.stringify(newOrder.comments);
       if (newOrder.userId) dataToInsert.userId = newOrder.userId;
       if (newOrder.vendedorId) dataToInsert.vendedorId = newOrder.vendedorId;
       if (newOrder.vendedorName) dataToInsert.vendedorName = newOrder.vendedorName;
 
-      console.log('💾 Inserindo no Supabase:', JSON.stringify(dataToInsert, null, 2));
+      console.log('💾 Inserindo no Supabase...');
 
-      // Tentar inserir com .select() para forçar retorno
-      const insertResult = await supabase
+      // Inserir diretamente sem .select() desnecessário
+      const { error: insertError } = await supabase
         .from('orders')
-        .insert([dataToInsert])
-        .select();
+        .insert([dataToInsert]);
 
-      console.log('📤 Resultado do insert:', insertResult);
-
-      if (insertResult.error) {
-        console.error('❌ Erro do Supabase:', JSON.stringify(insertResult.error, null, 2));
-        console.error('❌ Erro code:', insertResult.error.code);
-        console.error('❌ Erro message:', insertResult.error.message);
-        console.error('❌ Erro details:', insertResult.error.details);
-        console.error('❌ Erro hint:', insertResult.error.hint);
-        
-        // Tentar verificar se é problema de RLS
-        const { data: rlsCheck, error: rlsError } = await supabase
-          .from('orders')
-          .select('*')
-          .limit(1);
-        
-        console.log('🔍 Teste de leitura (RLS check):', { hasData: !!rlsCheck, error: rlsError });
-        
-        throw insertResult.error;
+      if (insertError) {
+        console.error('❌ Erro do Supabase:', insertError.message);
+        throw insertError;
       }
       
       console.log('✅ Ordem criada com sucesso:', newOrder.id);
       res.status(201).json(newOrder);
     } catch (error: any) {
-      console.error('❌ Erro ao criar ordem:', error);
-      console.error('❌ Stack:', error.stack);
+      console.error('❌ Erro ao criar ordem:', error.message);
       res.status(500).json({ 
         message: 'Erro interno do servidor.', 
-        error: error.message || String(error),
-        details: error.details || null
+        error: error.message || String(error)
       });
     }
   });
