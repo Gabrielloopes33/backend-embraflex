@@ -450,8 +450,8 @@ initializeDb().then(() => {
     }
   });
 
-  // --- ROTAS PROXY PARA WOOCOMMERCE (protegidas) ---
-  app.use('/api/wc', authenticateToken); // Aplica o middleware a todas as rotas /api/wc
+  // --- ROTAS PROXY PARA WOOCOMMERCE (SEM AUTENTICAÇÃO) ---
+  // REMOVIDO: app.use('/api/wc', authenticateToken); - Uso interno, não precisa auth
 
   app.get('/api/wc/products', async (req, res) => {
     try {
