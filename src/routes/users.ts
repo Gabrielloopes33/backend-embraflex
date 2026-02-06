@@ -417,14 +417,19 @@ router.post('/:id/change-password', requireAdmin, async (req: AuthenticatedReque
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
 
-    // Atualizar senha usando RPC function para evitar problemas com o client
-    const { data, error } = await supabase.rpc('change_user_password', {
-      user_id: id,
-      new_password_hash: passwordHash
-    });
+    // Executar SQL direto para evitar problemas com RPC e schema cache
+    const { error } = await supabase
+      .from('users')
+      .update({ 
+        password: passwordHash,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single();
 
     if (error) {
-      console.error('Error calling change_user_password RPC:', error);
+      console.error('Error updating password:', error);
       throw error;
     }
 
