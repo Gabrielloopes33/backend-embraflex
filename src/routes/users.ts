@@ -17,8 +17,14 @@ interface AuthenticatedRequest extends Request {
  * Middleware para verificar se é admin
  */
 const requireAdmin = (req: AuthenticatedRequest, res: Response, next: Function) => {
+  console.log('🔐 [RequireAdmin] User:', req.user?.username, '| Role:', req.user?.role);
   if (!req.user || req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+    console.log('❌ [RequireAdmin] Acesso negado para:', req.user?.username || 'usuário não identificado');
+    return res.status(403).json({
+      message: 'Acesso negado. Apenas administradores podem acessar esta rota.',
+      code: 'NOT_ADMIN',
+      userRole: req.user?.role || 'undefined'
+    });
   }
   next();
 };
