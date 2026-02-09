@@ -186,6 +186,8 @@ router.post('/', requireAdmin, async (req: AuthenticatedRequest, res: Response) 
     // Gerar ID único
     const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+    console.log('Creating user:', username, 'with role:', role);
+
     // Criar usuário
     const { data, error } = await supabase
       .from('users')
@@ -203,8 +205,16 @@ router.post('/', requireAdmin, async (req: AuthenticatedRequest, res: Response) 
       .single();
 
     if (error) {
+      console.error('Supabase insert error:', error);
       throw error;
     }
+
+    if (!data) {
+      console.error('No data returned from insert');
+      throw new Error('Falha ao criar usuário - nenhum dado retornado');
+    }
+
+    console.log('User created successfully:', data.id);
 
     // Remover senha da resposta
     const { password: _, ...userWithoutPassword } = data;
@@ -278,7 +288,9 @@ router.put('/:id', requireAdmin, async (req: AuthenticatedRequest, res: Response
     }
 
     // Preparar dados de atualização
-    const updates: any = {};
+    const updates: any = {
+      updated_at: new Date().toISOString()
+    };
 
     if (username) updates.username = username;
     if (email !== undefined) updates.email = email || null;
@@ -292,6 +304,8 @@ router.put('/:id', requireAdmin, async (req: AuthenticatedRequest, res: Response
       updates.password = await bcrypt.hash(password, saltRounds);
     }
 
+    console.log('Updating user:', id, 'with data:', { ...updates, password: password ? '[REDACTED]' : undefined });
+
     // Atualizar usuário
     const { data, error } = await supabase
       .from('users')
@@ -301,8 +315,16 @@ router.put('/:id', requireAdmin, async (req: AuthenticatedRequest, res: Response
       .single();
 
     if (error) {
+      console.error('Supabase update error:', error);
       throw error;
     }
+
+    if (!data) {
+      console.error('No data returned from update');
+      throw new Error('Falha ao atualizar usuário - nenhum dado retornado');
+    }
+
+    console.log('User updated successfully:', data.id);
 
     // Remover senha da resposta
     const { password: _, ...userWithoutPassword } = data;
