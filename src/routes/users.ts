@@ -424,7 +424,7 @@ router.post('/:id/change-password', requireAdmin, async (req: AuthenticatedReque
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
 
     // Executar SQL direto para evitar problemas com RPC e schema cache
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('users')
       .update({ 
         password: passwordHash,
@@ -439,11 +439,11 @@ router.post('/:id/change-password', requireAdmin, async (req: AuthenticatedReque
       throw error;
     }
 
-    if (error) {
-      throw error;
-    }
-
-    res.json({ message: 'Senha alterada com sucesso.' });
+    console.log('Password updated successfully for user:', id);
+    res.json({ 
+      message: 'Senha alterada com sucesso.',
+      user: { id: data.id, username: data.username }
+    });
   } catch (error) {
     console.error('Error changing password:', error);
     res.status(500).json({
