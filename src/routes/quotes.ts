@@ -20,6 +20,16 @@ function parseQuote(row: any): Quote {
     customerName: row.customer_name,
     customerEmail: row.customer_email,
     customerPhone: row.customer_phone,
+    customerCompany: row.customer_company,
+    customerCpf: row.customer_cpf,
+    customerCnpj: row.customer_cnpj,
+    customerCep: row.customer_cep,
+    customerAddress: row.customer_address,
+    customerNumber: row.customer_number,
+    customerComplement: row.customer_complement,
+    customerNeighborhood: row.customer_neighborhood,
+    customerCity: row.customer_city,
+    customerState: row.customer_state,
     products: row.products,
     totalPrice: parseFloat(row.total_price),
     status: row.status,
@@ -37,6 +47,8 @@ function parseQuote(row: any): Quote {
     rejectionReason: row.rejection_reason,
     convertedToOrderId: row.converted_to_order_id,
     notes: row.notes,
+    condicoesPagamento: row.condicoes_pagamento,
+    paymentMethod: row.condicoes_pagamento ? JSON.parse(row.condicoes_pagamento) : undefined,
   };
 }
 
@@ -124,7 +136,24 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try {
     const body: CreateQuoteRequest = req.body;
-    const { customerName, customerEmail, customerPhone, products, notes } = body;
+    const { 
+      customerName, 
+      customerEmail, 
+      customerPhone,
+      customerCompany,
+      customerCpf,
+      customerCnpj,
+      customerCep,
+      customerAddress,
+      customerNumber,
+      customerComplement,
+      customerNeighborhood,
+      customerCity,
+      customerState,
+      products, 
+      notes, 
+      paymentMethod 
+    } = body;
 
     if (!customerName || !products || products.length === 0) {
       return res.status(400).json({ message: 'Nome do cliente e produtos são obrigatórios.' });
@@ -142,12 +171,23 @@ router.post('/', async (req: Request, res: Response) => {
       customer_name: customerName,
       customer_email: customerEmail || null,
       customer_phone: customerPhone || null,
+      customer_company: customerCompany || null,
+      customer_cpf: customerCpf || null,
+      customer_cnpj: customerCnpj || null,
+      customer_cep: customerCep || null,
+      customer_address: customerAddress || null,
+      customer_number: customerNumber || null,
+      customer_complement: customerComplement || null,
+      customer_neighborhood: customerNeighborhood || null,
+      customer_city: customerCity || null,
+      customer_state: customerState || null,
       products: JSON.stringify(products),
       total_price: totalPrice,
       status: 'draft',
       created_by_id: createdById || null,
       created_by_name: createdByName || null,
       notes: notes || null,
+      condicoes_pagamento: paymentMethod ? JSON.stringify(paymentMethod) : null,
     };
 
     const { data, error } = await supabase
@@ -173,7 +213,24 @@ router.put('/:id', async (req: Request, res: Response) => {
 
   try {
     const body: UpdateQuoteRequest = req.body;
-    const { customerName, customerEmail, customerPhone, products, notes } = body;
+    const { 
+      customerName, 
+      customerEmail, 
+      customerPhone,
+      customerCompany,
+      customerCpf,
+      customerCnpj,
+      customerCep,
+      customerAddress,
+      customerNumber,
+      customerComplement,
+      customerNeighborhood,
+      customerCity,
+      customerState,
+      products, 
+      notes, 
+      paymentMethod 
+    } = body;
 
     // Get current quote
     const { data: currentQuote, error: fetchError } = await supabase
@@ -192,6 +249,16 @@ router.put('/:id', async (req: Request, res: Response) => {
     if (customerName !== undefined) updateData.customer_name = customerName;
     if (customerEmail !== undefined) updateData.customer_email = customerEmail;
     if (customerPhone !== undefined) updateData.customer_phone = customerPhone;
+    if (customerCompany !== undefined) updateData.customer_company = customerCompany;
+    if (customerCpf !== undefined) updateData.customer_cpf = customerCpf;
+    if (customerCnpj !== undefined) updateData.customer_cnpj = customerCnpj;
+    if (customerCep !== undefined) updateData.customer_cep = customerCep;
+    if (customerAddress !== undefined) updateData.customer_address = customerAddress;
+    if (customerNumber !== undefined) updateData.customer_number = customerNumber;
+    if (customerComplement !== undefined) updateData.customer_complement = customerComplement;
+    if (customerNeighborhood !== undefined) updateData.customer_neighborhood = customerNeighborhood;
+    if (customerCity !== undefined) updateData.customer_city = customerCity;
+    if (customerState !== undefined) updateData.customer_state = customerState;
     if (notes !== undefined) updateData.notes = notes;
 
     if (products) {
@@ -199,7 +266,11 @@ router.put('/:id', async (req: Request, res: Response) => {
       updateData.total_price = products.reduce((sum, p) => sum + p.subtotal, 0);
     }
 
-    // If quote was already sent (has signature link), invalidate the link
+    if (paymentMethod !== undefined) {
+      updateData.condicoes_pagamento = paymentMethod ? JSON.stringify(paymentMethod) : null;
+    }
+
+    // If quote was already sent (has signature link), invalidate link
     if (currentQuote.status === 'sent' && currentQuote.signature_link) {
       updateData.signature_link = null;
       updateData.signature_link_created_at = null;

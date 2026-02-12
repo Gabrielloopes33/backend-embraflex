@@ -1,6 +1,57 @@
 // Types for Quote system
 export type QuoteStatus = 'draft' | 'sent' | 'approved' | 'rejected' | 'converted';
 
+// Payment types
+export type PaymentMethodType = 'pix' | 'credit_card' | 'debit_card' | 'cash' | 'boleto' | 'combined';
+
+export interface BoletoPayment {
+  dueDate?: string;
+  instructions?: string;
+}
+
+export interface PaymentCard {
+  type: 'credit' | 'debit';
+  brand?: 'visa' | 'mastercard' | 'elo' | 'hipercard' | 'amex';
+  last4Digits?: string;
+  installmentCount?: number;
+}
+
+export interface CashPayment {
+  amount?: number;
+}
+
+export interface PixPayment {
+  key?: string;
+}
+
+export interface CombinedPayment {
+  method1?: {
+    type: PaymentMethodType;
+    amount?: number;
+    card?: PaymentCard;
+    pix?: PixPayment;
+    boleto?: BoletoPayment;
+  };
+  method2?: {
+    type: PaymentMethodType;
+    amount?: number;
+    card?: PaymentCard;
+    pix?: PixPayment;
+    boleto?: BoletoPayment;
+  };
+}
+
+export interface QuotePayment {
+  type: PaymentMethodType;
+  cards?: PaymentCard[];
+  cash?: CashPayment;
+  pix?: PixPayment;
+  boleto?: BoletoPayment;
+  combined?: CombinedPayment;
+  totalAmount: number;
+  notes?: string;
+}
+
 export interface QuoteProduct {
   id: string;
   name: string;
@@ -46,6 +97,16 @@ export interface Quote {
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;
+  customerCompany?: string;
+  customerCpf?: string;
+  customerCnpj?: string;
+  customerCep?: string;
+  customerAddress?: string;
+  customerNumber?: string;
+  customerComplement?: string;
+  customerNeighborhood?: string;
+  customerCity?: string;
+  customerState?: string;
 
   // Products
   products: QuoteProduct[];
@@ -81,6 +142,10 @@ export interface Quote {
 
   // Notes
   notes?: string;
+
+  // Payment method (stored as JSON string in condicoes_pagamento column)
+  condicoesPagamento?: string;
+  paymentMethod?: QuotePayment;
 }
 
 export interface QuoteView {
@@ -97,21 +162,60 @@ export interface QuoteView {
   };
 }
 
+// Customer full data interface
+export interface CustomerFullData {
+  name: string;
+  email?: string;
+  phone?: string;
+  company?: string;
+  cpf?: string;
+  cnpj?: string;
+  cep?: string;
+  address?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+}
+
 // Request/Response types
 export interface CreateQuoteRequest {
   customerName: string;
   customerEmail?: string;
   customerPhone?: string;
+  customerCompany?: string;
+  customerCpf?: string;
+  customerCnpj?: string;
+  customerCep?: string;
+  customerAddress?: string;
+  customerNumber?: string;
+  customerComplement?: string;
+  customerNeighborhood?: string;
+  customerCity?: string;
+  customerState?: string;
   products: QuoteProduct[];
   notes?: string;
+  paymentMethod?: QuotePayment;
 }
 
 export interface UpdateQuoteRequest {
   customerName?: string;
   customerEmail?: string;
   customerPhone?: string;
+  customerCompany?: string;
+  customerCpf?: string;
+  customerCnpj?: string;
+  customerCep?: string;
+  customerAddress?: string;
+  customerNumber?: string;
+  customerComplement?: string;
+  customerNeighborhood?: string;
+  customerCity?: string;
+  customerState?: string;
   products?: QuoteProduct[];
   notes?: string;
+  paymentMethod?: QuotePayment;
 }
 
 export interface GenerateSignatureLinkResponse {
@@ -122,10 +226,24 @@ export interface GenerateSignatureLinkResponse {
 export interface PublicQuoteData {
   quoteNumber: string;
   customerName: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  customerCompany?: string;
+  customerCpf?: string;
+  customerCnpj?: string;
+  customerCep?: string;
+  customerAddress?: string;
+  customerNumber?: string;
+  customerComplement?: string;
+  customerNeighborhood?: string;
+  customerCity?: string;
+  customerState?: string;
   products: QuoteProduct[];
   totalPrice: number;
   expiresAt: string;
   status: QuoteStatus;
+  condicoesPagamento?: string;
+  createdByName?: string;
 }
 
 export interface SignatureConfirmRequest {
@@ -182,4 +300,5 @@ export interface QuoteWithProducts {
   rejection_reason?: string;
   converted_to_order_id?: string;
   notes?: string;
+  condicoes_pagamento?: string;
 }
