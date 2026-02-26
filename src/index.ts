@@ -24,6 +24,76 @@ const JWT_SECRET = process.env.JWT_SECRET || 'seu_segredo_super_secreto';
 const normalizeUsername = (value: string) => value.trim().toLowerCase();
 const isBcryptHash = (value: string) => /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(value);
 
+async function ensureDefaultAdminUser() {
+  try {
+    const { data: users, error } = await supabase
+      .from('users')
+      .select('id, username, password, role, is_active')
+      .ilike('username', 'admin')
+      .limit(10);
+
+    if (error) {
+      console.error('❌ Falha ao verificar usuário admin padrão:', error);
+      return;
+    }
+
+    const existingAdmin = (users || []).find((user: any) =>
+      normalizeUsername(String(user.username || '')) === 'admin'
+    );
+
+    if (!existingAdmin) {
+      const passwordHash = await bcrypt.hash('admin123', 10);
+      const { error: insertError } = await supabase
+        .from('users')
+        .insert({
+          id: 'user-admin',
+          username: 'admin',
+          password: passwordHash,
+          role: 'admin',
+          is_active: true,
+        });
+
+      if (insertError) {
+        console.error('❌ Falha ao criar usuário admin padrão:', insertError);
+      } else {
+        console.log('✅ Usuário admin padrão criado (username: admin).');
+      }
+      return;
+    }
+
+    const updates: any = {};
+
+    if (normalizeUsername(String(existingAdmin.username || '')) !== 'admin') {
+      updates.username = 'admin';
+    }
+
+    if (existingAdmin.is_active === false) {
+      updates.is_active = true;
+    }
+
+    const currentPassword = String(existingAdmin.password || '');
+    if (!isBcryptHash(currentPassword)) {
+      const passwordToHash = currentPassword || 'admin123';
+      updates.password = await bcrypt.hash(passwordToHash, 10);
+    }
+
+    if (Object.keys(updates).length > 0) {
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', existingAdmin.id);
+
+      if (updateError) {
+        console.error('❌ Falha ao normalizar usuário admin padrão:', updateError);
+      } else {
+        console.log('✅ Usuário admin padrão normalizado com sucesso.');
+      }
+    }
+  } catch (error) {
+    console.error('❌ Erro inesperado no bootstrap do admin padrão:', error);
+  }
+}
+
 console.log('🚀 Embraflex Backend API v2.0 - Autenticação simplificada');
 console.log('🔗 APP_URL configurado:', process.env.APP_URL || 'http://localhost:5173 (fallback)');
 
@@ -98,8 +168,9 @@ app.use('/api/sync', syncRouter);
 app.use('/api/users', authenticateToken, usersRouter);
 
 
-initializeDb().then(() => {
+initializeDb().then(async () => {
   console.log('Banco de dados Supabase conectado e inicializado.');
+  await ensureDefaultAdminUser();
 
   // --- ROTA DE HEALTH CHECK ---
   app.get('/health', (req, res) => {
@@ -138,7 +209,12 @@ initializeDb().then(() => {
         .ilike('username', normalizedUsername)
         .limit(10);
 
-      if (error || !users || users.length === 0) {
+      if (error) {
+        console.error('❌ Erro ao consultar usuários no login:', error);
+        return res.status(500).json({ message: 'Serviço de autenticação indisponível.' });
+      }
+
+      if (!users || users.length === 0) {
         return res.status(401).json({ message: 'Credenciais inválidas.' });
       }
 

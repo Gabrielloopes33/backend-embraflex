@@ -35,8 +35,16 @@ async function initializeDb(): Promise<SupabaseClient> {
     
     // Testar conexão fazendo uma query simples
     const { error } = await supabase.from('users').select('count', { count: 'exact', head: true });
-    
-    if (error && error.code !== 'PGRST116') { // PGRST116 = tabela não existe (ok para primeira execução)
+
+    const errorMessage = String(error?.message || '').toLowerCase();
+    const isMissingUsersTable = Boolean(error) && (
+      error?.code === 'PGRST205' ||
+      error?.code === '42P01' ||
+      errorMessage.includes('relation') && errorMessage.includes('does not exist') ||
+      errorMessage.includes('table') && errorMessage.includes('not found')
+    );
+
+    if (isMissingUsersTable) {
       console.log('📊 Criando tabelas no Supabase...');
       
       // Criar tabelas usando SQL via Supabase
@@ -71,6 +79,9 @@ async function initializeDb(): Promise<SupabaseClient> {
       console.log('⚠️  Execute este SQL no Supabase Studio (SQL Editor):');
       console.log(createTablesSQL);
       console.log('\n✅ Após executar o SQL, as tabelas estarão prontas!');
+    } else if (error) {
+      console.error('❌ Erro ao validar conexão com Supabase/tabela users:', error);
+      throw new Error(`Falha ao validar banco: ${error.message}`);
     } else {
       console.log('✅ Conectado ao Supabase com sucesso!');
       console.log('✅ Tabelas já existem ou estão prontas para uso');
