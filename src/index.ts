@@ -21,6 +21,9 @@ const port = process.env.PORT || 3001;
 
 const JWT_SECRET = process.env.JWT_SECRET || 'seu_segredo_super_secreto';
 
+const normalizeUsername = (value: string) => value.trim().toLowerCase();
+const isBcryptHash = (value: string) => /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/.test(value);
+
 console.log('🚀 Embraflex Backend API v2.0 - Autenticação simplificada');
 console.log('🔗 APP_URL configurado:', process.env.APP_URL || 'http://localhost:5173 (fallback)');
 
@@ -123,25 +126,61 @@ initializeDb().then(() => {
       return res.status(400).json({ message: 'Usuário e senha são obrigatórios.' });
     }
 
+    const normalizedUsername = typeof username === 'string' ? normalizeUsername(username) : '';
+    if (!normalizedUsername) {
+      return res.status(400).json({ message: 'Usuário e senha são obrigatórios.' });
+    }
+
     try {
       const { data: users, error } = await supabase
         .from('users')
         .select('*')
-        .eq('username', username)
-        .limit(1);
+        .ilike('username', normalizedUsername)
+        .limit(10);
 
       if (error || !users || users.length === 0) {
         return res.status(401).json({ message: 'Credenciais inválidas.' });
       }
 
-      const user = users[0];
+      const user = users.find((candidate: any) =>
+        normalizeUsername(String(candidate.username || '')) === normalizedUsername
+      );
+
+      if (!user) {
+        return res.status(401).json({ message: 'Credenciais inválidas.' });
+      }
       
       // Verificar se usuário está ativo
       if (user.is_active === false) {
         return res.status(403).json({ message: 'Usuário inativo. Entre em contato com o administrador.' });
       }
-      
-      const match = await bcrypt.compare(password, user.password);
+
+      const storedPassword = String(user.password || '');
+      let match = false;
+
+      if (isBcryptHash(storedPassword)) {
+        match = await bcrypt.compare(password, storedPassword);
+      } else {
+        match = password === storedPassword;
+
+        if (match) {
+          const passwordHash = await bcrypt.hash(password, 10);
+          const { error: upgradeError } = await supabase
+            .from('users')
+            .update({
+              password: passwordHash,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', user.id);
+
+          if (upgradeError) {
+            console.warn('⚠️ Não foi possível migrar senha legada para hash:', upgradeError.message);
+          } else {
+            console.log('✅ Senha legada migrada para bcrypt:', user.username);
+          }
+        }
+      }
+
       if (!match) {
         return res.status(401).json({ message: 'Credenciais inválidas.' });
       }
