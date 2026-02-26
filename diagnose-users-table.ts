@@ -4,9 +4,25 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+console.log('📋 Configuração:');
+console.log('   URL:', supabaseUrl);
+console.log('   Service Key:', supabaseServiceKey ? '✅ Presente' : '❌ Ausente');
+console.log('');
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('❌ Erro: Variáveis de ambiente faltando!');
+  console.error('   Verifique se SUPABASE_URL e SUPABASE_SERVICE_KEY estão no .env');
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+});
 
 async function diagnoseUsersTable() {
   console.log('🔍 Diagnosticando tabela users...\n');

@@ -1,0 +1,238 @@
+
+> backend@1.0.0 dev
+> nodemon src/index.ts
+
+[33m[nodemon] 3.1.11[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: ts,json[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: ✅ audit secrets and track compliance: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: ⚙️  override existing env vars with { override: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  override existing env vars with { override: true }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112
+^C[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting child process[39m
+[32m[nodemon] starting `ts-node src/index.ts`[39m
+^C[dotenv@17.2.3] injecting env (19) from .env -- tip: 🔑 add access controls to secrets: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+🔌 Conectando ao Supabase...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Cliente Supabase inicializado com sucesso!
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+🚀 Embraflex Backend API v2.0 - Autenticação simplificada
+🔗 APP_URL configurado: https://embraflex1.netlify.app
+🔌 Conectando ao Supabase via REST API...
+📍 URL: https://supa.agenciatouch.com.br
+✅ Conectado ao Supabase com sucesso!
+✅ Tabelas já existem ou estão prontas para uso
+Banco de dados Supabase conectado e inicializado.
+Servidor rodando em http://localhost:54112

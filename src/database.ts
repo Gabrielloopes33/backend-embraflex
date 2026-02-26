@@ -80,8 +80,10 @@ async function initializeDb(): Promise<SupabaseClient> {
       console.log(createTablesSQL);
       console.log('\n✅ Após executar o SQL, as tabelas estarão prontas!');
     } else if (error) {
-      console.error('❌ Erro ao validar conexão com Supabase/tabela users:', error);
-      throw new Error(`Falha ao validar banco: ${error.message}`);
+      console.warn('⚠️  Erro ao validar conexão com Supabase/tabela users:', error);
+      console.log('📊 Execute este SQL no Supabase Studio (SQL Editor) para criar as tabelas necessárias:');
+      console.log(createTablesSQL);
+      console.log('\n⚠️  O backend continuará iniciando, mas algumas funcionalidades podem não funcionar até que as tabelas sejam criadas.');
     } else {
       console.log('✅ Conectado ao Supabase com sucesso!');
       console.log('✅ Tabelas já existem ou estão prontas para uso');
@@ -90,7 +92,8 @@ async function initializeDb(): Promise<SupabaseClient> {
     return supabase;
   } catch (error) {
     console.error('❌ Erro ao conectar ao Supabase:', error);
-    throw error;
+    console.log('⚠️  Continuando inicialização do backend apesar do erro de banco...');
+    return supabase;
   }
 }
 
