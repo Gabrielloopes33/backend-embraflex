@@ -44,36 +44,36 @@ async function initializeDb(): Promise<SupabaseClient> {
       errorMessage.includes('table') && errorMessage.includes('not found')
     );
 
+    // Criar tabelas usando SQL via Supabase
+    const createTablesSQL = `
+      -- Tabela de usuários
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL CHECK(role IN ('admin', 'vendedor')),
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      );
+
+      -- Tabela de pedidos
+      CREATE TABLE IF NOT EXISTS orders (
+        id TEXT PRIMARY KEY,
+        "customerName" TEXT NOT NULL,
+        products TEXT NOT NULL,
+        status TEXT NOT NULL,
+        priority TEXT NOT NULL,
+        notes TEXT,
+        "createdAt" TEXT NOT NULL,
+        history TEXT NOT NULL,
+        comments TEXT NOT NULL,
+        "userId" TEXT,
+        FOREIGN KEY ("userId") REFERENCES users (id)
+      );
+    `;
+
     if (isMissingUsersTable) {
       console.log('📊 Criando tabelas no Supabase...');
       
-      // Criar tabelas usando SQL via Supabase
-      const createTablesSQL = `
-        -- Tabela de usuários
-        CREATE TABLE IF NOT EXISTS users (
-          id TEXT PRIMARY KEY,
-          username TEXT UNIQUE NOT NULL,
-          password TEXT NOT NULL,
-          role TEXT NOT NULL CHECK(role IN ('admin', 'vendedor')),
-          created_at TIMESTAMPTZ DEFAULT NOW()
-        );
-
-        -- Tabela de pedidos
-        CREATE TABLE IF NOT EXISTS orders (
-          id TEXT PRIMARY KEY,
-          "customerName" TEXT NOT NULL,
-          products TEXT NOT NULL,
-          status TEXT NOT NULL,
-          priority TEXT NOT NULL,
-          notes TEXT,
-          "createdAt" TEXT NOT NULL,
-          history TEXT NOT NULL,
-          comments TEXT NOT NULL,
-          "userId" TEXT,
-          FOREIGN KEY ("userId") REFERENCES users (id)
-        );
-      `;
-
       // Executar SQL via RPC ou diretamente no Supabase Studio
       // Como não temos RPC configurado, vamos apenas logar
       console.log('⚠️  Execute este SQL no Supabase Studio (SQL Editor):');
